@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <link href="fonts/Lobster-Regular.ttf" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/cover.css" rel="stylesheet">
+
+    <title>Tempo</title>
+</head>
+
+<body>
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner col-lg-5 col-sm-5 col-md-4">
+                    <img src="img/logo3.png" class="img-responsive">
+                </div>
+                <div class="inner">
+                    <p align="right" class="lead"><a href="index.html">Desistir</a></p>
+                </div>
+
+            </div>
+
+            <div id="parte1" class="inner cover">
+                <h1 class="lob">Tempo!</h1>
+                <p class="lead">Siga as pistas e pare o tempo!</p>
+                <p class="lead">
+                    <a class="btn btn-lg btn-default" onclick="temporizador()">Iniciar</a>
+                </p>
+            </div>
+            <div id="parte2" class="inner cover sumir">
+                <h3 class="">Siga as pistas e pare o tempo!</h3>
+                <br/>
+                <h2 class="lob">Tempo restante</h2>
+                <h1 class="lob big"><span id="tempo"/></h1>
+                <br/>
+                <div class="form-group" align="center">
+                    <input type="number" id="number" class="form-control" placeholder="Senha">
+                </div>
+                <br/>
+                <p class="lead">
+                    <a class="btn btn-lg btn-warning" onclick="senha()">Parar</a>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="senhaErrada" class="modal fade" tabindex="-2" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content mod">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title lob">Senha errada!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Digitou a senha errada, tente novamente&hellip;</p>
+            </div>
+            <div class="modal-footer" >
+                <button type="button" align="center" class="btn btn-primary" onclick="closeModal()">Tentar novamente</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- jQuery (obrigatório para plugins JavaScript do Bootstrap) -->
+<script src="js/jquery.min.js"></script>
+<!-- Inclui todos os plugins compilados (abaixo), ou inclua arquivos separadados se necessário -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Phonegap plugins -->
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript">
+
+    var contador = 120;
+    $("#number").val("");
+
+    function temporizador() {
+        $("#parte1").hide();
+        $("#parte2").show();
+        if(contador > 0){
+            setTimeout(temporizador,1000);
+        } else if(contador<=0 ){
+            window.location.href = "perdeu.html";
+        }
+        document.getElementById('tempo').innerHTML = contador;
+        contador--;
+    }
+
+    var pass = "195";
+    function senha(){
+        if ($("#number").val() == pass){
+            window.location.href = "ganhou.html";
+        }else {
+            console.log("Senha Errada!");
+            openModal();
+        }
+    }
+
+    function openModal(){
+        $('#senhaErrada').modal('show');
+    }
+    function closeModal(){
+        $('#senhaErrada').modal('hide');
+    }
+
+</script>
+</body>
+
+</html>
